@@ -1,3 +1,7 @@
 spring:
   application:
     name: leads
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/leads
+    username: ajay
+    password: ajay
