@@ -32,6 +32,8 @@ public class LeadService {
 
     public Lead convertToDTO(com.crm.leads.model.Lead lead) {
         Lead l = new Lead();
+        l.setId(lead.getId());
+        l.setAssignedTo(lead.getAssignedTo());
         l.setName(lead.getName());
         l.setEmail(lead.getEmail());
         l.setAddress(lead.getAddress());
