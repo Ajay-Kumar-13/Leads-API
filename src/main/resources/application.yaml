@@ -5,3 +5,6 @@ spring:
     url: r2dbc:postgresql://localhost:5432/leads
     username: ajay
     password: ajay
+  app:
+    jwtSecret: aGVsbG93b3JsZHRoaXNpc2FzZWN1cmVzZWNyZXQxMjM0NTY=
+    accessTokenExpiration: 600000

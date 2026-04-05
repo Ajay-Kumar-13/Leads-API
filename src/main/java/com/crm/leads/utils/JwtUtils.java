@@ -1,0 +1,40 @@
+package com.crm.leads.utils;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.security.Key;
+
+@Component
+public class JwtUtils {
+
+    @Value("${spring.app.jwtSecret}")
+    private String jwtSecret;
+
+    @Value("${spring.app.accessTokenExpiration}")
+    private String jwtExpiration;
+
+    public Key key() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    }
+
+    public Claims getClaims(String token){
+        try {
+            return Jwts.parser().verifyWith((SecretKey) key()).build().parseSignedClaims(token).getPayload();
+        } catch (ExpiredJwtException e) {
+            throw new CredentialsExpiredException("INVALID ACCESS TOKEN");
+        } catch (JwtException e) {
+            throw new BadCredentialsException("INVALID ACCESS TOKEN");
+        }
+    }
+
+}

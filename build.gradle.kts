@@ -27,6 +27,14 @@ dependencies {
     // Reactive database access
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("org.postgresql:r2dbc-postgresql:1.0.4.RELEASE")
+
+    //	Spring Security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
+    //	JWT
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 }
 
 tasks.withType<Test> {
