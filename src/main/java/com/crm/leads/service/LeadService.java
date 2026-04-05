@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,15 @@ public class LeadService {
 //                .map(lead -> convertToDTO(lead))
                 .map(this::convertToDTO)
                 .collectList();
+    }
+
+    public Mono<ResponseEntity<String>> assignLead(UUID leadId, UUID assignedTo) {
+        return leadRepository.findById(leadId)
+                .flatMap(lead -> {
+                    lead.setAssignedTo(assignedTo);
+                    return leadRepository.save(lead);
+                })
+                .then(Mono.just(ResponseEntity.status(201).body("Updated Successfully")));
     }
 
     public Lead convertToDTO(com.crm.leads.model.Lead lead) {
