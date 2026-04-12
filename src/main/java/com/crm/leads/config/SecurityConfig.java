@@ -1,6 +1,8 @@
 package com.crm.leads.config;
 
 import com.crm.leads.security.CustomReactiveAuthenticationManager;
+import com.crm.leads.security.Exception.AuthenticationEntryPoint;
+import com.crm.leads.security.Exception.ServerAccessDenied;
 import com.crm.leads.security.JwtSecurityContextRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,12 @@ public class SecurityConfig {
     @Autowired
     JwtSecurityContextRepository jwtSecurityContextRepository;
 
+    @Autowired
+    AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    ServerAccessDenied serverAccessDenied;
+
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(
             ServerHttpSecurity http,
@@ -26,6 +34,10 @@ public class SecurityConfig {
     ) {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .exceptionHandling(exceptionHandlingSpec -> {
+                    exceptionHandlingSpec.authenticationEntryPoint(authenticationEntryPoint);
+                    exceptionHandlingSpec.accessDeniedHandler(serverAccessDenied);
+                })
                 .authorizeExchange(auth ->
                         auth
                                 .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
