@@ -27,8 +27,7 @@ public class AuthenticationEntryPoint implements ServerAuthenticationEntryPoint 
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .code(HttpStatus.UNAUTHORIZED.name())
+                .error(HttpStatus.UNAUTHORIZED.name())
                 .message("Invalid access token")
                 .build();
 
