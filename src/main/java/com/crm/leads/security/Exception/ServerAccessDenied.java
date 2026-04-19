@@ -7,12 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.server.authorization.ServerAccessDeniedHandler;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 
+@Component
 public class ServerAccessDenied implements ServerAccessDeniedHandler {
 
     @Autowired
@@ -24,9 +26,8 @@ public class ServerAccessDenied implements ServerAccessDeniedHandler {
         exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
 
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .code(HttpStatus.FORBIDDEN.name())
+                .error(HttpStatus.FORBIDDEN.name())
                 .message("Access Denied")
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return Mono.fromCallable(() -> objectMapper.writeValueAsBytes(errorResponse))

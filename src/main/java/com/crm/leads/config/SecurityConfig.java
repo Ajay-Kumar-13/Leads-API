@@ -1,8 +1,5 @@
 package com.crm.leads.config;
 
-import com.crm.leads.security.CustomReactiveAuthenticationManager;
-import com.crm.leads.security.Exception.AuthenticationEntryPoint;
-import com.crm.leads.security.Exception.ServerAccessDenied;
 import com.crm.leads.security.JwtSecurityContextRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +10,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
+import org.springframework.security.web.server.authorization.ServerAccessDeniedHandler;
 
 @Configuration
 @EnableWebFluxSecurity
@@ -22,10 +21,10 @@ public class SecurityConfig {
     JwtSecurityContextRepository jwtSecurityContextRepository;
 
     @Autowired
-    AuthenticationEntryPoint authenticationEntryPoint;
+    ServerAuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    ServerAccessDenied serverAccessDenied;
+    ServerAccessDeniedHandler serverAccessDenied;
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(
@@ -34,10 +33,10 @@ public class SecurityConfig {
     ) {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .exceptionHandling(exceptionHandlingSpec -> {
-                    exceptionHandlingSpec.authenticationEntryPoint(authenticationEntryPoint);
-                    exceptionHandlingSpec.accessDeniedHandler(serverAccessDenied);
-                })
+                .exceptionHandling(exceptionHandlingSpec ->
+                    exceptionHandlingSpec.authenticationEntryPoint(authenticationEntryPoint)
+                            .accessDeniedHandler(serverAccessDenied)
+                )
                 .authorizeExchange(auth ->
                         auth
                                 .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
