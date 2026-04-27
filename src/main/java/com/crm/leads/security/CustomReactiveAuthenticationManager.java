@@ -1,11 +1,13 @@
 package com.crm.leads.security;
 
 import com.crm.leads.utils.JwtUtils;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -13,10 +15,12 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Component
 public class CustomReactiveAuthenticationManager implements ReactiveAuthenticationManager {
-    private final JwtUtils jwtUtils;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
         String token= authentication.getCredentials().toString();
