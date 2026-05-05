@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/handle-leads/auth")
 public class AuthController {
     @GetMapping("/test")
     public Mono<String>test() {

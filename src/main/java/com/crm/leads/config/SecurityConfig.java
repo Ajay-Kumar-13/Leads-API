@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .authorizeExchange(auth ->
                         auth
                                 .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .pathMatchers("/api/auth/**").permitAll()
+                                .pathMatchers("/api/handle-leads/auth/**").permitAll()
                                 .anyExchange()
                                 .authenticated()
                 )
