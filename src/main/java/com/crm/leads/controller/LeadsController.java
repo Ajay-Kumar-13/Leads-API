@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/admin/leads")
+@RequestMapping("/api/handle-leads/admin/leads")
 public class LeadsController {
 
     private final LeadService leadService;
