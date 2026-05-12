@@ -14,7 +14,7 @@ public class Lead {
     @Id
     private UUID id;
     private String name;
-    private Long phone;
+    private String phone;
     private String email;
     private String address;
 
@@ -33,7 +33,7 @@ public class Lead {
     @Column("assigned_to")
     private UUID assignedTo;
 
-    public Lead(String name, Long phone, String email, String address, String leadSource, String leadState, String leadSubSource, String leadType) {
+    public Lead(String name, String phone, String email, String address, String leadSource, String leadState, String leadSubSource, String leadType) {
         this.name = name;
         this.phone = phone;
         this.email = email;

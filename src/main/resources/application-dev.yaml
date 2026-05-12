@@ -3,7 +3,7 @@ spring:
     name: leads
   app:
     jwtSecret: ${JWT_SECRET}
-    jwtExpiration: 86400000
+    jwtExpiration: 300000
 
   # Loads AWS Secrets
   config:
