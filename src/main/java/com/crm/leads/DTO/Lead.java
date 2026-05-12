@@ -8,7 +8,7 @@ import java.util.UUID;
 public class Lead {
     private UUID id;
     private String name;
-    private Long phone;
+    private String phone;
     private String email;
     private String address;
     private String leadSource;
