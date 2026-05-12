@@ -23,14 +23,14 @@ public class LeadService {
         Flux<com.crm.leads.model.Lead> convertedLeads = Flux.fromIterable(leads)
                 .map(dto -> new com.crm.leads.model.Lead(dto.getName(), dto.getPhone(), dto.getEmail(), dto.getAddress(), dto.getLeadSource(), dto.getLeadState(), dto.getLeadSubSource(), dto.getLeadType()));
         return leadRepository.saveAll(convertedLeads)
-                .onErrorMap(e -> new LeadsException(HttpStatus.INTERNAL_SERVER_ERROR, "511", "Failed to upload leads"))
+                .onErrorMap(e -> new LeadsException(HttpStatus.INTERNAL_SERVER_ERROR, "511", "Failed to upload leads: "+e.getMessage()))
                 .then(Mono.just(ResponseEntity.status(201).body("Successfully Uploaded all the Leads!")));
 
     }
 
     public Mono<List<Lead>> getAllLeads() {
         return leadRepository.findAll()
-                .onErrorMap(e -> new LeadsException(HttpStatus.INTERNAL_SERVER_ERROR, "512", "Failed to fetch leads"))
+                .onErrorMap(e -> new LeadsException(HttpStatus.INTERNAL_SERVER_ERROR, "512", "Failed to fetch leads: "+e.getMessage()))
 //                .map(lead -> convertToDTO(lead))
                 .map(this::convertToDTO)
                 .collectList();
