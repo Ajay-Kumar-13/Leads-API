@@ -4,9 +4,9 @@ create table IF not exists public.leads(
 	address TEXT,
 	phone varchar(10) UNIQUE,
 	email varchar(50) UNIQUE,
-	leadSource varchar(20),
-	leadState varchar(10),
-	leadSubSource varchar(10),
-	leadType varchar(10),
-	assignedTo uuid NULL
+	lead_source varchar(20),
+	lead_state varchar(10),
+	lead_sub_source varchar(10),
+	lead_type varchar(10),
+	assigned_to uuid NULL
 );
