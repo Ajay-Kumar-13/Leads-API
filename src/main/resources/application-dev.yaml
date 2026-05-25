@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: leads
+  app:
+    jwtSecret: ${JWT_SECRET}
+    jwtExpiration: 300000
+
+  # Loads AWS Secrets
+  config:
+    import: aws-secretsmanager:crm/users/db
+
+  # --- R2DBC ---
+  r2dbc:
+    url: "r2dbc:postgresql://crm-users.cd0ugew0yfl2.ap-south-1.rds.amazonaws.com:5432/crmleads?sslmode=require"
+
+  # --- JDBC (used only for Flyway) ---
+  datasource:
+    url: "jdbc:postgresql://crm-users.cd0ugew0yfl2.ap-south-1.rds.amazonaws.com:5432/crmleads?sslmode=require"
+
+  # --- Flyway ---
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    url: "jdbc:postgresql://crm-users.cd0ugew0yfl2.ap-south-1.rds.amazonaws.com:5432/crmleads?sslmode=require"
+
+  # --- Disable JPA completely ---
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  cloud:
+    aws:
+      region:
+        static: ap-south-1
+
+# --- LOGGING ---
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.boot.context.config: TRACE
+    org.springframework.core.env: TRACE
+    com.crm.users: DEBUG
+    org.flywaydb: DEBUG
