@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +36,7 @@ public class LeadsController {
     }
 
     @PutMapping
-    public Mono<ResponseEntity<String>> assignLead(@RequestBody UpdateLead lead) {
-        return leadService.assignLead(lead.getLeadId(), lead.getAssignedTo());
+    public Mono<ResponseEntity<String>> updateLead(@PathVariable UUID leadId, @RequestBody UpdateLead lead) {
+        return leadService.updateLead(lead.getLeadId(), lead);
     }
 }

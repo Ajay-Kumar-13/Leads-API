@@ -1,6 +1,7 @@
 package com.crm.leads.service;
 
 import com.crm.leads.DTO.Lead;
+import com.crm.leads.DTO.UpdateLead;
 import com.crm.leads.Exception.LeadsException;
 import com.crm.leads.repository.LeadRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,11 +37,12 @@ public class LeadService {
                 .collectList();
     }
 
-    public Mono<ResponseEntity<String>> assignLead(UUID leadId, UUID assignedTo) {
+    public Mono<ResponseEntity<String>> updateLead(UUID leadId, UpdateLead updateLead) {
         return leadRepository.findById(leadId)
-                .onErrorMap(e -> new LeadsException(HttpStatus.INTERNAL_SERVER_ERROR, "513", "Failed to assign lead"))
+                .onErrorMap(e -> new LeadsException(HttpStatus.INTERNAL_SERVER_ERROR, "513", "Failed to update lead"))
                 .flatMap(lead -> {
-                    lead.setAssignedTo(assignedTo);
+                    lead.setAssignedTo(updateLead.getAssignedTo());
+                    lead.setLeadState(updateLead.getLeadStatus());
                     return leadRepository.save(lead);
                 })
                 .then(Mono.just(ResponseEntity.status(201).body("Updated Successfully")));

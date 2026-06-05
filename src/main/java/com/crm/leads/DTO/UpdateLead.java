@@ -6,6 +6,10 @@ import java.util.UUID;
 
 @Data
 public class UpdateLead {
+    private String name;
+    private String phone;
+    private String email;
     private UUID assignedTo;
-    private UUID leadId;
+    private UUID id;
+    private String leadStatus;
 }
