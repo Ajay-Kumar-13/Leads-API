@@ -48,7 +48,7 @@ public class SecurityConfig {
                         auth
                                 .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .pathMatchers("/actuator/**").permitAll()
-                                .pathMatchers("/api/handle-leads/auth/**").permitAll()
+                                .pathMatchers("/api/handle-leads/submit-lead").permitAll()
                                 .anyExchange()
                                 .authenticated()
                 )

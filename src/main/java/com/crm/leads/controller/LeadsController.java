@@ -37,6 +37,6 @@ public class LeadsController {
 
     @PutMapping
     public Mono<ResponseEntity<String>> updateLead(@PathVariable UUID leadId, @RequestBody UpdateLead lead) {
-        return leadService.updateLead(lead.getLeadId(), lead);
+        return leadService.updateLead(lead.getId(), lead);
     }
 }
