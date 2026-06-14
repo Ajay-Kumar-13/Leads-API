@@ -1,6 +1,7 @@
 package com.crm.leads.service;
 
 import com.crm.leads.DTO.Lead;
+import com.crm.leads.DTO.UpdateLead;
 import com.crm.leads.Exception.LeadsException;
 import com.crm.leads.repository.LeadRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,13 @@ public class LeadService {
 
     }
 
+    public Mono<ResponseEntity<String>> directLeadsFromWebsite(Lead lead) {
+        com.crm.leads.model.Lead convertedLead = new com.crm.leads.model.Lead(lead.getName(), lead.getPhone(), lead.getEmail(), lead.getAddress(), lead.getLeadSource(), lead.getLeadState(), lead.getLeadSubSource(), lead.getLeadType());
+        return leadRepository.save(convertedLead)
+                .onErrorMap(e -> new LeadsException(HttpStatus.INTERNAL_SERVER_ERROR, "511", "Failed to upload leads: "+e.getMessage()))
+                .then(Mono.just(ResponseEntity.status(201).body("Successfully Uploaded the Lead!")));
+    }
+
     public Mono<List<Lead>> getAllLeads() {
         return leadRepository.findAll()
                 .onErrorMap(e -> new LeadsException(HttpStatus.INTERNAL_SERVER_ERROR, "512", "Failed to fetch leads: "+e.getMessage()))
@@ -36,11 +44,12 @@ public class LeadService {
                 .collectList();
     }
 
-    public Mono<ResponseEntity<String>> assignLead(UUID leadId, UUID assignedTo) {
+    public Mono<ResponseEntity<String>> updateLead(UUID leadId, UpdateLead updateLead) {
         return leadRepository.findById(leadId)
-                .onErrorMap(e -> new LeadsException(HttpStatus.INTERNAL_SERVER_ERROR, "513", "Failed to assign lead"))
+                .onErrorMap(e -> new LeadsException(HttpStatus.INTERNAL_SERVER_ERROR, "513", "Failed to update lead"))
                 .flatMap(lead -> {
-                    lead.setAssignedTo(assignedTo);
+                    lead.setAssignedTo(updateLead.getAssignedTo());
+                    lead.setLeadState(updateLead.getLeadStatus());
                     return leadRepository.save(lead);
                 })
                 .then(Mono.just(ResponseEntity.status(201).body("Updated Successfully")));
